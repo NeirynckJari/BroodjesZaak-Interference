@@ -56,7 +56,7 @@ namespace Prb.Ee.Broodjes.Wpf
             cmbBreadType.SelectedIndex = 0;
         }
 
-        void CheckForToppings(string name)
+        void CheckAndAddToppings(string name)
         {
             if (chkHesp.IsChecked == false && chkKaas.IsChecked == false && chkGroentjes.IsChecked == false)
             {
@@ -81,9 +81,9 @@ namespace Prb.Ee.Broodjes.Wpf
 
         void AddOrder(string name, BreadType breadType)
         {
-            order.Add(name, new List<Enum> { breadType });
+            order.Add(name, new List<Enum>());
             order[name].Add(breadType);
-            CheckForToppings(name);
+            CheckAndAddToppings(name);
         }
 
         void UpdateOverviewListBox(string customerName, Dictionary<string, List<Enum>> order)
@@ -96,6 +96,11 @@ namespace Prb.Ee.Broodjes.Wpf
                 lstOverview.Items.Add($"{order[customerName][0]} broodje");
             }
             lstOverview.Items.Add("Gekozen Toppings:");
+
+            //het probleem bevind zich hier onder, in mijn logica (momenteel) lijkt mij dit OK. Voor iedere Enum Topping in order met die customername
+            //display de Toppings die we eerder toevoegde met CheckAndAddToppings
+            //als je GEEN topping aanvinkt zal hij op basis van de combobox index toch toppings gaan toevoegen
+
             if (order.ContainsKey(customerName))
             {
                 foreach (Topping topping in order[customerName]) 
